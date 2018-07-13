@@ -1,3 +1,5 @@
+// Copyright 2018 ishan@khatri.io
+
 #include "network.h"
 
 namespace network{
