@@ -35,11 +35,23 @@ Network::Network(vector<int> sizes){
   }
 }
 
+VectorXf Network::FeedForward(VectorXf a) {
+  MatrixXf r;
+  for (int i = 0; i < num_layers; i++) {
+    r = sigmoid((weights[i] * a) + biases[i]);
+  }
+  return r;
+}
+
+void Network::SGD(tuple<int, int> test_data) {
+
+}
+
 // Misc functions
 
-// using a faster approximation of the sigmoid function
-// f(x) = x / (1 + abs(x))
 MatrixXf sigmoid(MatrixXf z){
+  // using a faster approximation of the sigmoid function
+  // f(x) = x / (1 + abs(x))
   MatrixXf r = z;
   for(int i=0; i< z.size(); i++){
     float x = r.data()[i];
