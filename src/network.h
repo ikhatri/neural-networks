@@ -6,12 +6,13 @@
 #include <vector>
 #include <random>
 #include <tuple>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <Eigen/dense>
 #endif
 
-#ifdef linux
+#ifdef __linux__
 #include <eigen3/Eigen/Dense>
 #endif
 
@@ -22,6 +23,8 @@ using std::tuple;
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
+typedef tuple<MatrixXf, int> data;
+
 class Network{
   public:
     int num_layers;
@@ -30,8 +33,15 @@ class Network{
     vector<MatrixXf> weights;
     Network(vector<int> s);
     VectorXf FeedForward(VectorXf a);
-    void SGD(tuple<int, int> test_data = nullptr);
+    void SGD(vector<data> training_data, int epochs, int mini_batch_size, float learning_rate, vector<data> test_data = vector<data>());
+    void update_mini_batch(vector<data> mini_batch, float learning_rate);
+    int evaluate(vector<data> test_data);
+    tuple<vector<VectorXf>, vector<MatrixXf>> backprop(data d);
+    VectorXf cost_derivative(VectorXf output_activations, int y);
+    VectorXf convert_output(int output);
 };
+
+MatrixXf sigmoid(MatrixXf z);
 
 } // namespace network
 
