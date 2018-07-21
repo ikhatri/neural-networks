@@ -40,8 +40,9 @@ class Network{
     VectorXf cost_derivative(VectorXf output_activations, int y);
     VectorXf convert_output(int output);
 };
-
+// Misc functions
 MatrixXf sigmoid(MatrixXf z);
+MatrixXf sigmoid_prime(MatrixXf z);
 
 } // namespace network
 

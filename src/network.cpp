@@ -154,14 +154,18 @@ tuple<vector<VectorXf>, vector<MatrixXf>> Network::backprop(data d){
   *nabla_b.end() = delta;
   *nabla_w.end() = delta * (*(activations.end()-1)).transpose();
 
-  // for(int l=num_layers-2; l>1; l--){
-  //   MatrixXf z = zs[l];
-  //   MatrixXf sp = sigmoid_prime(z);
-  //   delta = weights[l+1].transpose() * delta * sp;
-  // }
+  for(int l=num_layers-2; l>1; l--){
+    MatrixXf z = zs[l];
+    MatrixXf sp = sigmoid_prime(z);
+    delta = weights[l+1].transpose() * delta * sp;
+    nabla_b[l] = delta;
+    nabla_w[l] = delta * activations[l - 1].transpose();
+  }
+  return make_tuple(nabla_b, nabla_w);
 }
 
 int Network::evaluate(vector<data> test_data){
+  // std::cout << std::distance(sampleArray.begin(), std::max_element(sampleArray.begin(), sampleArray.end()))
   return 0;
 }
 
