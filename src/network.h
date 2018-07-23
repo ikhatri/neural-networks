@@ -2,6 +2,8 @@
 
 #ifndef NETWORK_H_
 
+#include "MNISTParser.h"
+
 #include <iostream>
 #include <vector>
 #include <random>
@@ -23,7 +25,7 @@ using std::tuple;
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
-typedef tuple<MatrixXf, int> data;
+typedef tuple<VectorXf, int> data;
 
 class Network{
   public:
@@ -39,6 +41,7 @@ class Network{
     tuple<vector<VectorXf>, vector<MatrixXf>> backprop(data d);
     VectorXf cost_derivative(VectorXf output_activations, int y);
     VectorXf convert_output(int output);
+    int max_index(VectorXf a);
 };
 // Misc functions
 MatrixXf sigmoid(MatrixXf z);

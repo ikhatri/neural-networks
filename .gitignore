@@ -366,3 +366,4 @@ ASALocalRun/
 
 .vscode/
 bin/
+*.gz

@@ -102,6 +102,7 @@
     <ClCompile Include="src\network.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\MNISTParser.h" />
     <ClInclude Include="src\network.h" />
   </ItemGroup>
   <ItemGroup>
