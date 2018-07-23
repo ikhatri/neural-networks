@@ -366,4 +366,5 @@ ASALocalRun/
 
 .vscode/
 bin/
-*.gz
+*.idx1-ubyte
+*.idx3-ubyte
