@@ -18,7 +18,8 @@ Network::Network(vector<int> sizes){
   num_layers = sizes.size();
   layer_sizes = sizes;
   
-  std::default_random_engine generator;
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine generator(seed);
   std::normal_distribution<float> distribution(0.0,1.0);
   
   for(int layer=1; layer<num_layers; layer++){
@@ -79,6 +80,9 @@ void Network::SGD(vector<data> training_data, int epochs, int mini_batch_size, f
     // Evaluate against test data if provided
     if(n_test != 0){
       cout << "Epoch " << i << ": " << evaluate(test_data) << " / " << n_test << endl;
+      // auto r = FeedForward(get<0>(test_data[0]));
+      // int max = max_index(r);
+      // cout << "Network Result: " << max << " | Real Answer: " << get<1>(test_data[0]) << endl;
     }
     else{
       cout << "Epoch " << i << " complete" << endl;
@@ -198,7 +202,7 @@ int Network::evaluate(vector<data> test_data){
 
 int Network::max_index(VectorXf a) {
   int max_index = 0;
-  float curr_max = 0;
+  float curr_max = std::numeric_limits<float>::lowest();
   for (int i = 0; i < a.rows(); i++) {
     if (a[i] > curr_max) {
       curr_max = a[i];
@@ -224,7 +228,7 @@ MatrixXf sigmoid(MatrixXf z){
   // using a faster approximation of the sigmoid function
   // f(x) = x / (1 + abs(x))
   MatrixXf r = z;
-  for(int i=0; i< z.size(); i++){
+  for(int i=0; i< r.size(); i++){
     float x = r.data()[i];
     r.data()[i] = x / (1 + fabs(x));
   }
@@ -262,4 +266,6 @@ int main(){
 
   Network n = Network({ 784, 30, 10 });
   n.SGD(mnist.GetTrainingData(), 20, 10, 3.0, mnist.GetTestData());
+  // int max = n.max_index(n.FeedForward(get<0>(mnist.GetTestData()[0])));
+  // cout << "Result of FeedForward: " << max << " | Real Answer: " << get<1>(mnist.GetTestData()[0]) << endl;
 }

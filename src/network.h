@@ -9,6 +9,7 @@
 #include <random>
 #include <tuple>
 #include <algorithm>
+#include <chrono>
 
 #ifdef _WIN32
 #include <Eigen/dense>
