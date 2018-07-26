@@ -18,6 +18,9 @@
 
 #ifdef __linux__
 #include <eigen3/Eigen/Dense>
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),(mode)))==NULL
+#define fread_s(buffer, bufferSize, elementSize, count, stream) fread(buffer, elementSize, count, stream)
+#define _byteswap_ulong(value) __builtin_bswap32(value)
 #endif
 
 using std::vector;

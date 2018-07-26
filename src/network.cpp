@@ -70,11 +70,8 @@ void Network::SGD(vector<data> training_data, int epochs, int mini_batch_size, f
     }
     
     // Update each mini_batch
-    int m = 0;
     for(auto mini_batch : mini_batches){
       update_mini_batch(mini_batch, learning_rate);
-      m++;
-      //cout << "Update Mini-Batch run successfully " << m << " times" << endl;
     }
 
     // Evaluate against test data if provided
@@ -224,15 +221,19 @@ VectorXf Network::convert_output(int output){
 
 // Misc functions
 
+// MatrixXf sigmoid(MatrixXf z){
+//   // using a faster approximation of the sigmoid function
+//   // f(x) = x / (1 + abs(x))
+//   MatrixXf r = z;
+//   for(int i=0; i< r.size(); i++){
+//     float x = r.data()[i];
+//     r.data()[i] = x / (1 + fabs(x));
+//   }
+//   return r;
+// }
+
 MatrixXf sigmoid(MatrixXf z){
-  // using a faster approximation of the sigmoid function
-  // f(x) = x / (1 + abs(x))
-  MatrixXf r = z;
-  for(int i=0; i< r.size(); i++){
-    float x = r.data()[i];
-    r.data()[i] = x / (1 + fabs(x));
-  }
-  return r;
+  return(1.0 + (-z).array().exp()).inverse().matrix();
 }
 
 MatrixXf sigmoid_prime(MatrixXf z){
@@ -265,7 +266,7 @@ int main(){
   mnist.Parse("t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte", true);
 
   Network n = Network({ 784, 30, 10 });
-  n.SGD(mnist.GetTrainingData(), 20, 10, 3.0, mnist.GetTestData());
+  n.SGD(mnist.GetTrainingData(), 30, 10, 3.0, mnist.GetTestData());
   // int max = n.max_index(n.FeedForward(get<0>(mnist.GetTestData()[0])));
   // cout << "Result of FeedForward: " << max << " | Real Answer: " << get<1>(mnist.GetTestData()[0]) << endl;
 }
